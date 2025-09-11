@@ -54,15 +54,7 @@ const FormFileInput: React.FC<Props> = ({ onFileLoad }: Props) => {
     };
 
         return (
-            <div className="relative min-h-screen w-full flex items-center justify-center bg-[url('/src/assets/fondoR.webp')] bg-cover bg-center" >
-                <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:6rem_4rem]">
-                    <div className="absolute bottom-0 left-0 right-0 top-0 bg-[radial-gradient(circle_800px_at_100%_200px,#d5c5ff,transparent)]"></div>
-                </div>
-                <div className="absolute top-0 left-0 right-0 flex flex-col items-center mt-12">
-                    <h1 className="text-8xl font-bold text-center text-violet-300 drop-shadow-lg" style={{fontFamily: '"Slackey", sans-serif'}} >Reconocedor</h1>
-                    <h2 className="text-5xl font-bold text-center text-violet-200 mt-2 drop-shadow-lg" style={{fontFamily: '"Slackey", sans-serif'}}>Tokens y Lexemas </h2>
-                </div>
-                <div className="flex flex-col items-center justify-center w-full max-w-xl p-8 rounded-2xl text-white shadow-lg border border-blue-700 bg-gray-900/80 z-10 mt-32">
+                <div className="flex flex-col items-center justify-center w-full max-w-xl p-8 rounded-2xl text-white shadow-lg border border-blue-700 bg-gray-900/80 z-10">
                     <div
                         onDrop={handleDrop}
                         onDragOver={handleDragOver}
@@ -113,7 +105,6 @@ const FormFileInput: React.FC<Props> = ({ onFileLoad }: Props) => {
                         </button>
                     )}
                 </div>
-            </div>
         );
 };
 
