@@ -1,11 +1,33 @@
 import mammoth from "mammoth";
+import * as pdfjsLib from "pdfjs-dist";
+
+    pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
+    "pdfjs-dist/build/pdf.worker.min.js",
+    import.meta.url
+    ).toString();
 
 const parseFile = async (file: File): Promise<string> => {
 
 
     if (file.type === "application/pdf") {
-        // aca colocamos la logica para extraer el texto del pdf 
-        throw new Error("Lectura de PDF aún no implementada");
+        // aca colocamos la logica para extraer el texto del pdf
+            // extraer texto del pdf
+            const arrayBuffer = await file.arrayBuffer();
+            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer}).promise
+
+            let textContent = "";
+
+            for (let i = 1; i <= pdf.numPages; i++) {
+            const page = await pdf.getPage(i);
+            const content = await page.getTextContent();
+
+            const strings = content.items.map((item: any) => item.str);
+            textContent += strings.join(" ") + "\n";
+        }
+
+        return textContent;
+
+        
 
     } else if (
         file.type ===
@@ -13,7 +35,7 @@ const parseFile = async (file: File): Promise<string> => {
     ) {
         // Extraer texto de DOCX 
         const arrayBuffer = await file.arrayBuffer();
-        const { value } = await mammoth.extractRawText({ buffer: arrayBuffer });
+        const { value } = await mammoth.extractRawText({ arrayBuffer });
         return value;
 
     } else if (file.type === "text/plain") {
