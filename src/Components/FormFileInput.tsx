@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import parseFile from "../Services/parser";
+import Analizer from "../Services/Analizer";
+import  keywords from "./KeyWords.json";
 
 const UploadFile = () => {
   const [file, setFile] = useState<File | null>(null);
+  const keyWoords = keywords
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -22,7 +25,17 @@ const UploadFile = () => {
     parseFile(file)
         .then((text) => {
             console.log("Texto extraído:", text);
-            // aca vamos a colocar la funcion para analizar el texto 
+            // aca vamos a colocar la funcion para analizar el text 
+            const conteo = Analizer(text, keyWoords.ReservedWords)
+            const conteoOperators = Analizer(text, keyWoords.Operators)
+            const conteoDelimiters = Analizer(text, keyWoords.Delimiters)
+            const palabras = text.match(/\b[a-zA-Z_][a-zA-Z0-9_]*\b/g) || []
+            const palabrasFiltradas = palabras.filter((value) => !keyWoords.ReservedWords.includes(value))
+            const conteoVariables = Analizer(text, palabrasFiltradas)
+            console.log("Conteooo palabras clavee: ", conteo)
+            console.log("conteooo Operators: ", conteoOperators)
+            console.log("conteoooo delimiters:", conteoDelimiters)
+            console.log("conteooo variables", conteoVariables)
         }
         ).catch((error) => {
             console.error("Error al extraer el texto:", error);
