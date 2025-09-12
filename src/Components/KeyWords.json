@@ -1,0 +1,16 @@
+{
+    "ReservedWords": [
+        "Si", "Entonces", "Sino", "FinSi", "Mientras", "Hacer", "FinMientras", "Para", "Hasta", "Paso", "FinPara",
+        "Funcion", "FinFuncion", "Retornar", "Dimension", "Definir", "Como", "Entero", "Real", "Booleano", "Caracter",
+        "Cadena", "Logico", "Verdadero", "Falso", "Y", "O", "No", "AbrirArchivo", "CerrarArchivo", "LeerArchivo",
+        "EscribirArchivo", "SiNoExiste", "SiExiste", "AbrirParaLectura", "AbrirParaEscritura", "AbrirParaAgregar",
+        "Segun", "Caso", "De", "Otro", "FinSegun", "HacerMientras", "Continuar", "Detener", "Principal", "LimpiarPantalla", "Pausa", "MostrarMensaje", "LeerEntrada"
+    ],
+    "Operators": [
+        "+", "-", "*", "/", "%", "=", "==", "!=", "<", ">", "<=", ">=", "&&", "||", "!", "++", "--"
+    ],
+    "Delimiters": [
+        "(", ")", "{", "}", "[", "]", ";", ",", "."
+    ]
+
+}
