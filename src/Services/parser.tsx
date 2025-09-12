@@ -1,10 +1,8 @@
 import mammoth from "mammoth";
 import * as pdfjsLib from "pdfjs-dist";
+import pdfjsWorker from "pdfjs-dist/build/pdf.worker?url"; // 👈 importante
 
-    pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
-    "pdfjs-dist/build/pdf.worker.min.js",
-    import.meta.url
-    ).toString();
+pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
 const parseFile = async (file: File): Promise<string> => {
 

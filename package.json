@@ -14,12 +14,14 @@
     "mammoth": "^1.10.0",
     "pdf-lib": "^1.17.1",
     "pdfjs-dist": "^5.4.149",
+    "pdfmake": "^0.2.20",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "tailwindcss": "^4.1.13"
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",
+    "@types/pdfmake": "^0.2.11",
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
     "@vitejs/plugin-react": "^5.0.0",

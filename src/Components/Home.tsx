@@ -16,7 +16,7 @@ const Home = () => {
                 </h2>
             </div>
             <div className="w-full flex justify-center z-10">
-                <FormFileInput onFileLoad={() => {}} />
+                <FormFileInput  />
             </div>
         </div>
     )

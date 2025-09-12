@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import parseFile from "../Services/parser";
 import Analizer from "../Services/Analizer";
 import keywords from "./KeyWords.json";
+import Report from "../Services/Report";
 
 const UploadFile = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -51,6 +52,10 @@ const UploadFile = () => {
       );
 
   };
+
+  const createDownloadReport = () => {
+    Report(report)
+  }
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
@@ -115,6 +120,7 @@ const UploadFile = () => {
         </div>
       )}
 
+      <button onClick={createDownloadReport} >Downdload report</button>
     </div>
   );
 };
