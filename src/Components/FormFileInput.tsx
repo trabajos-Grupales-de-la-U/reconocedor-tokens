@@ -7,6 +7,7 @@ import Report from "../Services/Report";
 const UploadFile = () => {
   const [file, setFile] = useState<File | null>(null);
   const [report, setReport] = useState<any | null>(null); // guarda resultados
+  const [error, setError] = useState<string | null>(null); // guarda mensaje error
   const keyWoords = keywords
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,6 +49,7 @@ const UploadFile = () => {
       }
       ).catch((error) => {
         console.error("Error al extraer el texto:", error);
+        setError("Error al extraer el texto: " + error.message);
       }
       );
 
@@ -86,7 +88,7 @@ const UploadFile = () => {
 
         <button
           type="submit"
-          className="bg-blue-600 text-white px-6 py-2 rounded-lg mt-4 border-none cursor-pointer hover:bg-blue-700" style={{fontFamily: 'Passero One, sans-serif'}}
+          className="bg-blue-600 text-white px-6 py-2 rounded-lg mt-4 border-none cursor-pointer hover:bg-blue-700" style={{ fontFamily: 'Passero One, sans-serif' }}
         >
           Analizar
         </button>
@@ -94,11 +96,11 @@ const UploadFile = () => {
 
       {report && (
         <div className="bg-trasparent p-8 rounded-2xl shadow-lg text-white border border-blue-700 min-w-[320px] flex-1">
-          <h2 className="text-xl font-bold mb-4 text-center" style={{fontFamily: 'Passero One, sans-serif'}}>Reporte de análisis</h2>
+          <h2 className="text-xl font-bold mb-4 text-center" style={{ fontFamily: 'Passero One, sans-serif' }}>Reporte de análisis</h2>
 
           <div className="flex flex-col gap-4">
             <div>
-              <h3 className="font-semibold font-thin" style={{fontFamily: 'Passero One, sans-serif'}}>Palabras reservadas:</h3>
+              <h3 className="font-semibold font-thin" style={{ fontFamily: 'Passero One, sans-serif' }}>Palabras reservadas:</h3>
               <pre className="bg-transparent border border-violet-700 p-2 rounded-md text-sm overflow-auto text-indigo-100">
 
                 {JSON.stringify(filterEmpty(report.reserved), null, 2)}
@@ -107,16 +109,16 @@ const UploadFile = () => {
             </div>
 
             <div>
-              <h3 className="font-semibold font-thin" style={{fontFamily: 'Passero One, sans-serif'}}>Operadores:</h3>
+              <h3 className="font-semibold font-thin" style={{ fontFamily: 'Passero One, sans-serif' }}>Operadores:</h3>
               <pre className="bg-transparent border border-violet-700 p-2 rounded-md text-sm overflow-auto text-indigo-100">
 
-                 {JSON.stringify(filterEmpty(report.operators), null, 2)}
+                {JSON.stringify(filterEmpty(report.operators), null, 2)}
 
               </pre>
             </div>
 
             <div>
-              <h3 className="font-semibold font-thin" style={{fontFamily: 'Passero One, sans-serif'}}>Delimitadores:</h3>
+              <h3 className="font-semibold font-thin" style={{ fontFamily: 'Passero One, sans-serif' }}>Delimitadores:</h3>
               <pre className="bg-transparent border border-violet-700 p-2 rounded-md text-sm overflow-auto text-indigo-100">
 
                 {JSON.stringify(filterEmpty(report.delimiters), null, 2)}
@@ -125,7 +127,7 @@ const UploadFile = () => {
             </div>
 
             <div>
-              <h3 className="font-semibold font-thin" style={{fontFamily: 'Passero One, sans-serif'}}>Variables:</h3>
+              <h3 className="font-semibold font-thin" style={{ fontFamily: 'Passero One, sans-serif' }}>Variables:</h3>
               <pre className="bg-transparent border border-violet-700 p-2 rounded-md text-sm overflow-auto text-indigo-100">
 
                 {JSON.stringify(filterEmpty(report.variables), null, 2)}
@@ -137,6 +139,21 @@ const UploadFile = () => {
       )}
 
       <button onClick={createDownloadReport} >Downdload report</button>
+
+      {error && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
+          <div className="bg-gray-900 text-white p-6 rounded-2xl shadow-lg border border-blue-700 max-w-md text-center">
+            <h2 className="text-lg font-bold mb-4">Ocurrió un error</h2>
+            <p className="mb-6">{error}</p>
+            <button
+              onClick={() => setError(null)}
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+            >
+              Cerrar
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
