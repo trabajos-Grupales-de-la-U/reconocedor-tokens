@@ -4,10 +4,13 @@
         "Funcion", "FinFuncion", "Retornar", "Dimension", "Definir", "Como", "Entero", "Real", "Booleano", "Caracter",
         "Cadena", "Logico", "Verdadero", "Falso", "Y", "O", "No", "AbrirArchivo", "CerrarArchivo", "LeerArchivo",
         "EscribirArchivo", "SiNoExiste", "SiExiste", "AbrirParaLectura", "AbrirParaEscritura", "AbrirParaAgregar",
-        "Segun", "Caso", "De", "Otro", "FinSegun", "HacerMientras", "Continuar", "Detener", "Principal", "LimpiarPantalla", "Pausa", "MostrarMensaje", "LeerEntrada"
+        "Segun", "Caso", "De", "Otro", "FinSegun", "HacerMientras", "Continuar", "Detener", "Principal", "LimpiarPantalla", "Pausa", "MostrarMensaje", "LeerEntrada",
+        "Algoritmo", "FinAlgoritmo", "SubProceso", "FinSubProceso", "Funcion", "FinFuncion", "Definir", "Como", "Dimension", "Const",
+        "Entero", "Real", "Caracter", "Cadena", "Logico", "Escribir", "Leer", "Si", "Entonces", "Sino", "FinSi", "Segun", "De", "Otro",
+        "FinSegun", "Para", "Hasta", "Con Paso", "FinPara", "Mientras", "Hacer", "FinMientras", "Repetir", "Hasta Que"
     ],
     "Operators": [
-        "+", "-", "*", "/", "%", "=", "==", "!=", "<", ">", "<=", ">=", "&&", "||", "!", "++", "--"
+        "+", "-", "*", "/", "%", "=", "==", "!=", "<", ">", "<=", ">=", "&&", "!", "++", "--"
     ],
     "Delimiters": [
         "(", ")", "{", "}", "[", "]", ";", ",", "."
