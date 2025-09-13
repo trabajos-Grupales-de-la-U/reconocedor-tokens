@@ -1,69 +1,135 @@
-# React + TypeScript + Vite
+# Reconocedor de Tokens
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Una aplicación web para analizar y reconocer tokens en pseudocódigo de PSeInt. Permite subir archivos de texto (PDF, DOCX, TXT) y realiza un análisis léxico para identificar y contar diferentes tipos de tokens.
 
-Currently, two official plugins are available:
+## 🚀 Características
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Análisis de múltiples formatos**: Soporta archivos PDF, DOCX y TXT
+- **Reconocimiento de tokens**: Identifica palabras reservadas, operadores, delimitadores y variables
+- **Interfaz intuitiva**: Diseño moderno con TailwindCSS
+- **Tecnología moderna**: Desarrollado con React, TypeScript y Vite
 
-## Expanding the ESLint configuration
+## 📋 Tokens Reconocidos
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Palabras Reservadas
+Incluye todas las palabras clave de PSeInt en español:
+- Estructuras de control: `Si`, `Entonces`, `Sino`, `Mientras`, `Para`, etc.
+- Tipos de datos: `Entero`, `Real`, `Cadena`, `Logico`, etc.
+- Funciones: `Funcion`, `Retornar`, `MostrarMensaje`, etc.
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Operadores
+- Aritméticos: `+`, `-`, `*`, `/`, `%`
+- Relacionales: `=`, `==`, `!=`, `<`, `>`, `<=`, `>=`
+- Lógicos: `&&`, `||`, `!`
+- Incremento: `++`, `--`
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+### Delimitadores
+- Paréntesis: `(`, `)`
+- Llaves: `{`, `}`
+- Corchetes: `[`, `]`
+- Punto y coma: `;`
+- Coma: `,`
+- Punto: `.`
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Variables
+Identificadores que no son palabras reservadas, siguiendo el patrón: `[a-zA-Z_][a-zA-Z0-9_]*`
+
+## 🛠️ Tecnologías Utilizadas
+
+- **Frontend**: React 19 + TypeScript
+- **Build Tool**: Vite
+- **Styling**: TailwindCSS
+- **PDF Processing**: pdfjs-dist
+- **Word Processing**: mammoth
+- **Linting**: ESLint con configuración TypeScript
+
+## 📦 Instalación
+
+1. Clona el repositorio:
+```bash
+git clone https://github.com/tu-usuario/reconocedor-tokens.git
+cd reconocedor-tokens
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. Instala las dependencias:
+```bash
+npm install
+```
+
+3. Inicia el servidor de desarrollo:
+```bash
+npm run dev
+```
+
+4. Abre tu navegador en `http://localhost:5173`
+
+## 🚀 Scripts Disponibles
+
+- `npm run dev` - Inicia el servidor de desarrollo
+- `npm run build` - Construye la aplicación para producción
+- `npm run preview` - Vista previa de la build de producción
+- `npm run lint` - Ejecuta el linter
+
+## 📁 Estructura del Proyecto
+
+```
+src/
+├── Components/
+│   ├── Home.tsx              # Componente principal
+│   ├── FormFileInput.tsx     # Formulario de subida de archivos
+│   └── KeyWords.json         # Definición de tokens
+├── Services/
+│   ├── parser.tsx            # Servicio de parsing de archivos
+│   ├── Analizer.tsx          # Lógica de análisis de tokens
+│   └── Report.tsx            # Servicio de reportes (en desarrollo)
+└── App.tsx                   # Aplicación principal
+```
+
+## 🔧 Configuración de ESLint
+
+El proyecto incluye configuración avanzada de ESLint para TypeScript y React. Para habilitar reglas type-aware:
 
 ```js
 // eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
 export default tseslint.config([
-  globalIgnores(['dist']),
+  // Configuración existente...
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
+      ...tseslint.configs.recommendedTypeChecked,
     ],
     languageOptions: {
       parserOptions: {
         project: ['./tsconfig.node.json', './tsconfig.app.json'],
         tsconfigRootDir: import.meta.dirname,
       },
-      // other options...
     },
   },
 ])
 ```
+
+## 🤝 Contribuir
+
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/nueva-funcionalidad`)
+3. Commit tus cambios (`git commit -am 'Agrega nueva funcionalidad'`)
+4. Push a la rama (`git push origin feature/nueva-funcionalidad`)
+5. Abre un Pull Request
+
+## 📝 Licencia
+
+Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
+
+## 👥 Autores
+
+-ANDERSSON MISHAEL LÓPEZ SANÍC
+-AXEL ALEJANDRO GARCÍA BARRIENTOS
+-BREYNER ORLANDO LARIOS SERECH
+-JORGE ARMANDO MAGUEY TAJÍN
+-MAYNOR DAVID SEMEYÁ CURRUCHICHE
+-SAMUEL ESTUARDO GONZÁLEZ CHITAMUL
+
+## 🙏 Agradecimientos
+
+- PSeInt por proporcionar la base de pseudocódigo en español
+- Las bibliotecas de código abierto utilizadas en este proyecto
