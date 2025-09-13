@@ -68,18 +68,18 @@ const UploadFile = () => {
   };
 
   return (
-    <div className="flex flex-row items-start w-full max-w-4xl mx-auto gap-8">
+    <div className="flex flex-col md:flex-row items-start w-full max-w-4xl mx-auto gap-4 md:gap-8 px-2">
       <form
         onSubmit={handleSubmit}
-        className="bg-trasparent p-8 rounded-2xl shadow-lg text-white border border-blue-700 min-w-[320px] flex-1"
+        className="bg-transparent p-4 sm:p-8 rounded-2xl shadow-lg text-white border border-blue-700 min-w-[260px] sm:min-w-[320px] flex-1 w-full max-w-md mx-auto"
       >
-        <h2 className="text-xl font-bold text-center font-light" style={{ fontFamily: 'Passero One, sans-serif' }}>Subir documento</h2>
+        <h2 className="text-xl sm:text-2xl text-center font-light" style={{ fontFamily: 'Passero One, sans-serif' }}>Subir documento</h2>
 
         <input
           type="file"
           accept=".pdf,.docx,.txt"
           onChange={handleFileChange}
-          className="bg-transparent border border-gray-300 p-2 rounded-md w-full"
+          className="bg-transparent border border-violet-700 p-2 rounded-md w-full mt-4 text-violet-200 font-thin" style={{ fontFamily: 'Passero One, sans-serif' }}
         />
 
         {file && (
@@ -88,7 +88,7 @@ const UploadFile = () => {
 
         <button
           type="submit"
-          className="bg-blue-600 text-white px-6 py-2 rounded-lg mt-4 border-none cursor-pointer hover:bg-blue-700" style={{ fontFamily: 'Passero One, sans-serif' }}
+          className="bg-blue-600 text-white px-6 py-2 rounded-lg mt-4 border-none cursor-pointer hover:bg-blue-700 w-full sm:w-auto" style={{ fontFamily: 'Passero One, sans-serif' }}
         >
           Analizar
         </button>
@@ -97,9 +97,9 @@ const UploadFile = () => {
           {report && (
             <button 
               onClick={createDownloadReport} 
-              className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700"
+              className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 font-light w-full sm:w-auto" style={{fontFamily: 'Passero One, sans-serif'}}
             >
-              Download report
+              Descargar Reporte
             </button>
           )}
         </div>
@@ -107,50 +107,40 @@ const UploadFile = () => {
       </form>
 
       {report && (
-        <div className="bg-trasparent p-8 rounded-2xl shadow-lg text-white border border-blue-700 min-w-[320px] flex-[1.5]">
-          <h2 className="text-xl font-bold mb-4 text-center" style={{fontFamily: 'Passero One, sans-serif'}}>Reporte de análisis</h2>
+        <div className="bg-transparent p-4 sm:p-8 rounded-2xl shadow-lg text-white border border-blue-700 min-w-[260px] sm:min-w-[320px] flex-[1.5] overflow-x-auto max-h-[400px] w-full">
+          <h2 className="text-xl sm:text-2xl font-bold mb-4 text-center font-light" style={{fontFamily: 'Passero One, sans-serif'}}>Reporte de análisis</h2>
 
           <div className="flex flex-col gap-4">
             <div>
-              <h3 className="font-semibold font-thin" style={{ fontFamily: 'Passero One, sans-serif' }}>Palabras reservadas:</h3>
-              <pre className="bg-transparent border border-violet-700 p-2 rounded-md text-sm overflow-auto text-indigo-100">
-
+              <h3 className="font-semibold font-thin" style={{ fontFamily: 'Passero One, sans-serif' }}> Palabras reservadas:</h3>
+              <pre className="bg-transparent border border-violet-700 p-2 rounded-md text-sm overflow-auto text-violet-200">
                 {JSON.stringify(filterEmpty(report.reserved), null, 2)}
-
               </pre>
             </div>
 
             <div>
               <h3 className="font-semibold font-thin" style={{ fontFamily: 'Passero One, sans-serif' }}>Operadores:</h3>
-              <pre className="bg-transparent border border-violet-700 p-2 rounded-md text-sm overflow-auto text-indigo-100">
-
+              <pre className="bg-transparent border border-violet-700 p-2 rounded-md text-sm overflow-auto text-violet-200">
                 {JSON.stringify(filterEmpty(report.operators), null, 2)}
-
               </pre>
             </div>
 
             <div>
               <h3 className="font-semibold font-thin" style={{ fontFamily: 'Passero One, sans-serif' }}>Delimitadores:</h3>
-              <pre className="bg-transparent border border-violet-700 p-2 rounded-md text-sm overflow-auto text-indigo-100">
-
+              <pre className="bg-transparent border border-violet-700 p-2 rounded-md text-sm overflow-auto text-violet-200">
                 {JSON.stringify(filterEmpty(report.delimiters), null, 2)}
-
               </pre>
             </div>
 
             <div>
               <h3 className="font-semibold font-thin" style={{ fontFamily: 'Passero One, sans-serif' }}>Variables:</h3>
-              <pre className="bg-transparent border border-violet-700 p-2 rounded-md text-sm overflow-auto text-indigo-100">
-
+              <pre className="bg-transparent border border-violet-700 p-2 rounded-md text-sm overflow-auto text-violet-200">
                 {JSON.stringify(filterEmpty(report.variables), null, 2)}
-
               </pre>
             </div>
           </div>
         </div>
       )}
-
-      <button onClick={createDownloadReport} >Downdload report</button>
 
       {error && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
@@ -166,7 +156,6 @@ const UploadFile = () => {
           </div>
         </div>
       )}
-
 
     </div>
   );
