@@ -90,10 +90,22 @@ const UploadFile = () => {
         >
           Analizar
         </button>
+
+        <div className="mt-4">
+          {report && (
+            <button 
+              onClick={createDownloadReport} 
+              className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700"
+            >
+              Download report
+            </button>
+          )}
+        </div>
+
       </form>
 
       {report && (
-        <div className="bg-trasparent p-8 rounded-2xl shadow-lg text-white border border-blue-700 min-w-[320px] flex-1">
+        <div className="bg-trasparent p-8 rounded-2xl shadow-lg text-white border border-blue-700 min-w-[320px] flex-[1.5]">
           <h2 className="text-xl font-bold mb-4 text-center" style={{fontFamily: 'Passero One, sans-serif'}}>Reporte de análisis</h2>
 
           <div className="flex flex-col gap-4">
@@ -136,7 +148,8 @@ const UploadFile = () => {
         </div>
       )}
 
-      <button onClick={createDownloadReport} >Downdload report</button>
+
+
     </div>
   );
 };
