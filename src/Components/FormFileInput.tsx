@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import parseFile from "../Services/parser";
 import Analizer from "../Services/Analizer";
 import keywords from "./KeyWords.json";
+import Report from "../Services/Report";
 
 const UploadFile = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -52,69 +53,81 @@ const UploadFile = () => {
 
   };
 
+  const createDownloadReport = () => {
+    Report(report)
+  }
+
+  // 🔹 función que elimina entradas con valor 0
+  const filterEmpty = (data: Record<string, number>) => {
+    return Object.fromEntries(
+      Object.entries(data).filter(([_, value]) => value > 0)
+    );
+  };
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex flex-row items-start w-full max-w-4xl mx-auto gap-8">
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-6 rounded-2xl shadow-md flex flex-col items-center gap-4"
+        className="bg-trasparent p-8 rounded-2xl shadow-lg text-white border border-blue-700 min-w-[320px] flex-1"
       >
-        <h2 className="text-xl font-bold">Subir documento</h2>
+        <h2 className="text-xl font-bold text-center font-light" style={{ fontFamily: 'Passero One, sans-serif' }}>Subir documento</h2>
 
         <input
           type="file"
           accept=".pdf,.docx,.txt"
           onChange={handleFileChange}
-          className="border p-2 rounded-md"
+          className="bg-transparent border border-gray-300 p-2 rounded-md w-full"
         />
 
         {file && (
-          <p className="text-gray-700">Archivo: {file.name}</p>
+          <p className="text-slate-500 mt-2">Archivo: {file.name}</p>
         )}
 
         <button
           type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+          className="bg-blue-600 text-white px-6 py-2 rounded-lg mt-4 border-none cursor-pointer hover:bg-blue-700" style={{fontFamily: 'Passero One, sans-serif'}}
         >
           Analizar
         </button>
       </form>
 
-        {report && (
-        <div className="bg-white p-6 rounded-2xl shadow-md w-1/2">
-          <h2 className="text-xl font-bold mb-4">Reporte de análisis</h2>
+      {report && (
+        <div className="bg-trasparent p-8 rounded-2xl shadow-lg text-white border border-blue-700 min-w-[320px] flex-1">
+          <h2 className="text-xl font-bold mb-4 text-center" style={{fontFamily: 'Passero One, sans-serif'}}>Reporte de análisis</h2>
 
-          <div className="space-y-4">
+          <div className="flex flex-col gap-4">
             <div>
-              <h3 className="font-semibold">Palabras reservadas:</h3>
-              <pre className="bg-gray-100 p-2 rounded-md text-sm overflow-auto">
-                {JSON.stringify(report.reserved, null, 2)}
+              <h3 className="font-semibold font-thin" style={{fontFamily: 'Passero One, sans-serif'}}>Palabras reservadas:</h3>
+              <pre className="bg-transparent border border-violet-700 p-2 rounded-md text-sm overflow-auto text-indigo-100">
+                {JSON.stringify(filterEmpty(report.reserved), null, 2)}
               </pre>
             </div>
 
             <div>
-              <h3 className="font-semibold">Operadores:</h3>
-              <pre className="bg-gray-100 p-2 rounded-md text-sm overflow-auto">
-                {JSON.stringify(report.operators, null, 2)}
+              <h3 className="font-semibold font-thin" style={{fontFamily: 'Passero One, sans-serif'}}>Operadores:</h3>
+              <pre className="bg-transparent border border-violet-700 p-2 rounded-md text-sm overflow-auto text-indigo-100">
+                 {JSON.stringify(filterEmpty(report.operators), null, 2)}
               </pre>
             </div>
 
             <div>
-              <h3 className="font-semibold">Delimitadores:</h3>
-              <pre className="bg-gray-100 p-2 rounded-md text-sm overflow-auto">
-                {JSON.stringify(report.delimiters, null, 2)}
+              <h3 className="font-semibold font-thin" style={{fontFamily: 'Passero One, sans-serif'}}>Delimitadores:</h3>
+              <pre className="bg-transparent border border-violet-700 p-2 rounded-md text-sm overflow-auto text-indigo-100">
+                {JSON.stringify(filterEmpty(report.delimiters), null, 2)}
               </pre>
             </div>
 
             <div>
-              <h3 className="font-semibold">Variables:</h3>
-              <pre className="bg-gray-100 p-2 rounded-md text-sm overflow-auto">
-                {JSON.stringify(report.variables, null, 2)}
+              <h3 className="font-semibold font-thin" style={{fontFamily: 'Passero One, sans-serif'}}>Variables:</h3>
+              <pre className="bg-transparent border border-violet-700 p-2 rounded-md text-sm overflow-auto text-indigo-100">
+                {JSON.stringify(filterEmpty(report.variables), null, 2)}
               </pre>
             </div>
           </div>
         </div>
       )}
 
+      <button onClick={createDownloadReport} >Downdload report</button>
     </div>
   );
 };
