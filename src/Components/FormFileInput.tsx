@@ -57,6 +57,14 @@ const UploadFile = () => {
     Report(report)
   }
 
+
+  // elimina entradas con valor 0
+  const filterEmpty = (data: Record<string, number>) => {
+    return Object.fromEntries(
+      Object.entries(data).filter(([_, value]) => value > 0)
+    );
+  };
+
   return (
     <div className="flex flex-row items-start w-full max-w-4xl mx-auto gap-8">
       <form
@@ -92,28 +100,36 @@ const UploadFile = () => {
             <div>
               <h3 className="font-semibold font-thin" style={{fontFamily: 'Passero One, sans-serif'}}>Palabras reservadas:</h3>
               <pre className="bg-transparent border border-violet-700 p-2 rounded-md text-sm overflow-auto text-indigo-100">
-                {JSON.stringify(report.reserved, null, 2)}
+
+                {JSON.stringify(filterEmpty(report.reserved), null, 2)}
+
               </pre>
             </div>
 
             <div>
               <h3 className="font-semibold font-thin" style={{fontFamily: 'Passero One, sans-serif'}}>Operadores:</h3>
               <pre className="bg-transparent border border-violet-700 p-2 rounded-md text-sm overflow-auto text-indigo-100">
-                {JSON.stringify(report.operators, null, 2)}
+
+                 {JSON.stringify(filterEmpty(report.operators), null, 2)}
+
               </pre>
             </div>
 
             <div>
               <h3 className="font-semibold font-thin" style={{fontFamily: 'Passero One, sans-serif'}}>Delimitadores:</h3>
               <pre className="bg-transparent border border-violet-700 p-2 rounded-md text-sm overflow-auto text-indigo-100">
-                {JSON.stringify(report.delimiters, null, 2)}
+
+                {JSON.stringify(filterEmpty(report.delimiters), null, 2)}
+
               </pre>
             </div>
 
             <div>
               <h3 className="font-semibold font-thin" style={{fontFamily: 'Passero One, sans-serif'}}>Variables:</h3>
               <pre className="bg-transparent border border-violet-700 p-2 rounded-md text-sm overflow-auto text-indigo-100">
-                {JSON.stringify(report.variables, null, 2)}
+
+                {JSON.stringify(filterEmpty(report.variables), null, 2)}
+
               </pre>
             </div>
           </div>
