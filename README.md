@@ -84,29 +84,18 @@ src/
 │   └── Report.tsx            # Servicio de reportes (en desarrollo)
 └── App.tsx                   # Aplicación principal
 ```
+---
 
-## 🔧 Configuración de ESLint
+## 🖼️ Vista Previa
+1. Vista del Home
+<img width="1911" height="968" alt="Captura de pantalla 2025-09-13 131551" src="https://github.com/user-attachments/assets/b82384e0-655c-4cb9-a5f2-826f724bf594" />
 
-El proyecto incluye configuración avanzada de ESLint para TypeScript y React. Para habilitar reglas type-aware:
+2. Vista despues de analizar el archivo seleccionado
+<img width="1905" height="910" alt="Captura de pantalla 2025-09-13 131937" src="https://github.com/user-attachments/assets/b97c0f70-0fe1-4bb3-b372-31c245eac203" />
 
-```js
-// eslint.config.js
-export default tseslint.config([
-  // Configuración existente...
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      ...tseslint.configs.recommendedTypeChecked,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-    },
-  },
-])
-```
+3. Vista del Documento creado
+<img width="1879" height="908" alt="Captura de pantalla 2025-09-13 132022" src="https://github.com/user-attachments/assets/e511649a-c334-49cd-9f92-0ab396f93986" />
+
 
 ## 🤝 Contribuir
 
