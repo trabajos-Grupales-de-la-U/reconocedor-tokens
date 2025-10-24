@@ -2,37 +2,48 @@
 import React from "react";
 import type { Token } from "../core/tokenTypes";
 import { TokenType } from "../core/tokenTypes";
-import "../styles/editor.css"; // importa los estilos del IDE
+import "../styles/editor.css";
 
 interface EditorProps {
   tokens: Token[];
 }
 
-/**
- * Mapea tipo de token -> clase CSS (definidas en editor.css)
- * Si prefieres seguir usando Tailwind en lugar de las clases de editor.css,
- * cambia los valores por clases Tailwind (p. ej. "text-green-400").
- */
 const classByType: Record<TokenType, string> = {
-  [TokenType.Reserved]: "keyword",
-  [TokenType.Number]: "number",
-  [TokenType.Grouping]: "operator",
-  [TokenType.Operator]: "operator",
-  [TokenType.String]: "string",
-  [TokenType.Identifier]: "identifier",
-  [TokenType.Comment]: "comment",
-  [TokenType.Whitespace]: "", // el espacio/salto no necesita color
-  [TokenType.Error]: "error-token",
+  [TokenType.Reserved]: "text-blue-400", // 🔵 Palabras reservadas
+  [TokenType.Number]: "text-orange-400", // 🟠 Números y constantes
+  [TokenType.Grouping]: "text-white", // ⚪ Agrupadores
+  [TokenType.Operator]: "text-yellow-400", // 🟡 Operadores lógicos/comparación
+  [TokenType.String]: "text-green-300", // 💚 Cadenas
+  [TokenType.Identifier]: "text-pink-400", // 🌸 Variables / Identificadores
+  [TokenType.Comment]: "text-gray-400 italic", // ⚫ Comentarios
+  [TokenType.Whitespace]: "", // sin color
+  [TokenType.Error]: "bg-red-600 text-white px-1 rounded", // 🔴 Errores
 };
 
 const Editor: React.FC<EditorProps> = ({ tokens }) => {
   return (
-    // <pre> preserva los \n tal cual; además aplicamos la clase de aspecto IDE
-    <pre className="ide-code-block">
+    <pre
+      className="
+        bg-[#1e1e1e] 
+        text-white 
+        font-mono 
+        text-sm 
+        p-4 
+        rounded-lg 
+        shadow-lg 
+        w-full 
+        max-w-3xl 
+        text-left 
+        overflow-x-auto 
+        leading-6 
+        border 
+        border-gray-700 
+        whitespace-pre-wrap 
+        break-words
+      "
+    >
       {tokens.map((t, i) => {
         const cls = classByType[t.type] || "";
-
-        // No hagas nada raro con los \n; <pre> los respeta y se verán las líneas
         return (
           <span key={i} className={cls}>
             {t.value}

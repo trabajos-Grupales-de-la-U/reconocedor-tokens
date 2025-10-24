@@ -43,6 +43,20 @@ export class Lexer {
   private tokenizeLine(line: string): boolean {
     let position = 0;
 
+        // --- Regla adicional (conveniencia): línea parece definición de función pero no empieza con 'def' ---
+    {
+      // Coincide líneas del estilo: <algo> nombre( ... ):
+      // Si ese <algo> NO es 'def', entonces consideramos error léxico (en este proyecto).
+      const defLike = /^\s*([A-Za-z_][A-Za-z0-9_]*)\s+[A-Za-z_][A-Za-z0-9_]*\s*\(.*\)\s*:\s*$/.exec(line);
+      if (defLike && defLike[1] !== "def") {
+        const wrong = defLike[1];
+        this.addToken(TokenType.Error, wrong);
+        this.errorMessage = `Error léxico en línea ${this.line}, columna ${this.column}: se esperaba 'def' al inicio de una definición de función (encontrado '${wrong}').`;
+        return false;
+      }
+    }
+
+
     while (position < line.length) {
       const substring = line.slice(position);
 
