@@ -1,0 +1,3 @@
+# Error: comillas sin cerrar
+mensaje = "Hola mundo
+print(mensaje)

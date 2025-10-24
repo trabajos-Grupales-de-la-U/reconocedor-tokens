@@ -1,0 +1,2 @@
+# Error: símbolo no válido
+x = 5 @ 2

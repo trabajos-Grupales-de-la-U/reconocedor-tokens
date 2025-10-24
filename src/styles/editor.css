@@ -1,0 +1,52 @@
+/* === Apariencia estilo IDE para el bloque de código coloreado === */
+
+.ide-code-block {
+  background-color: #1e1e1e;              /* fondo tipo VSCode */
+  color: #d4d4d4;
+  font-family: "JetBrains Mono", "Fira Code", Consolas, monospace;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  padding: 1.2rem 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  border-left: 4px solid #007acc;         /* línea azul lateral */
+  overflow-x: auto;
+  white-space: pre-wrap;                  /* <── preserva \n y permite envolver */
+  margin-top: 0.75rem;
+  width: 100%;
+  max-width: 640px;
+}
+
+/* Colores sintácticos simulados */
+.ide-code-block .comment {
+  color: #6a9955;
+  font-style: italic;
+}
+
+.ide-code-block .keyword {
+  color: #569cd6;
+  font-weight: 500;
+}
+
+.ide-code-block .string {
+  color: #ce9178;
+}
+
+.ide-code-block .number {
+  color: #b5cea8;
+}
+
+.ide-code-block .operator {
+  color: #d4d4d4;
+}
+
+.ide-code-block .identifier {
+  color: #9cdcfe;
+}
+
+.ide-code-block .error-token {
+  background-color: #b00020;
+  color: #ffffff;
+  padding: 0 2px;
+  border-radius: 3px;
+}

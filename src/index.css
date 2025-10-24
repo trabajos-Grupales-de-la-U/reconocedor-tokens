@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Fondo y tipografía general */
+body {
+  @apply bg-[#1e1e1e] text-white font-mono;
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center; /* centra horizontalmente */
+  align-items: flex-start; /* mantiene arriba */
+  padding-top: 5rem; /* espacio superior */
+  padding-bottom: 3rem; /* espacio inferior para scroll */
+}
+
+/* Configuración base del documento */
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: dark;
+  color: rgba(255, 255, 255, 0.9);
+  background-color: #1e1e1e;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Estilo de enlaces */
+a {
+  font-weight: 500;
+  color: #7aa2ff;
+  text-decoration: none;
+}
+a:hover {
+  color: #a3b8ff;
+}
+
+/* Botones base */
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+/* Encabezados */
+h1 {
+  font-size: 2.2rem;
+  line-height: 1.2;
+  text-align: center;
+}
+
+/* Modo claro opcional */
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
