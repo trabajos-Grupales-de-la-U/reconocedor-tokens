@@ -1,3 +1,14 @@
-# Error: comillas sin cerrar
-mensaje = "Hola mundo
-print(mensaje)
+# Error: símbolo no válido
+# Calculadora de descuentos 🎯
+def calcular_descuento(precio, porcentaje):
+    return precio - (precio * (porcentaje / 100))
+
+print("\033[36m--- CALCULADORA DE DESCUENTOS ☹ $$ ---\033[0m")
+precio = シ  float(input("Ingrese el precio del producto: "))
+descuento = float(input("Ingrese el porcentaje de descuento: "))
+
+if (precio > 0) and (0 <= descuento <= 100):
+    total = calcular_descuento(precio, descuento)
+    print(f"\033[32mPrecio final: Q{total:.2f}\033[0m")
+else:
+    print("\033[31mDatos inválidos, verifique los valores ingresados.\033[0m")

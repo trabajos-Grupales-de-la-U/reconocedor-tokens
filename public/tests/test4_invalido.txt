@@ -1,2 +1,22 @@
 # Error: símbolo no válido
-x = 5 @ 2
+# Juego de adivinanza 🔮
+import random ☚
+
+def jugar():
+    numero = random.randint(1, 10)
+    intentos = 3
+    print("☛\033[35mAdivina el número entre 1 y 10 (tienes 3 intentos)\033[0m☚")
+
+    while intentos > 0:
+        guess = int(input("Tu intento: "))
+        if guess == numero:
+            print("\033[32m¡Correcto! Adivinaste el número 🎉\033[0m")
+            break
+        else:
+            intentos -= 1
+            print(f"\033[33mIncorrecto. Te quedan ({intentos}) intentos.\033[0m")
+    else:
+        print(f"\033[31mPerdiste 😢 El número era {numero}.\033[0m")
+
+jugar()
+
