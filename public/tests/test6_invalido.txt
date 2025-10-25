@@ -1,3 +1,18 @@
-# Error: palabra no reconocida
-definr suma(a, b):
-    return a + b
+# Error: símbolo no válido
+def crear_datos():
+    return {
+        "lista": [1, 2, 3],
+        "tupla": (4, 5, 6),
+        "dicc": {"a": 7, "b": 8},
+        "set": {$, %, 11}
+    }
+
+def mostrar_datos(datos):
+    print(f"Lista: {datos['lista']}")
+    print(f"Tupla: {datos['tupla']}")
+    print(f"Diccionario: {datos['dicc']}")
+    print(f"Set: {datos['set']}")
+
+if _name_ == "_main_":
+    datos = crear_datos()
+    mostrar_datos(datos)
