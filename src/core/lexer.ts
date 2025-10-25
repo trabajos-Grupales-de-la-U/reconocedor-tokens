@@ -163,7 +163,7 @@ export class Lexer {
 
       const afterAbs = baseOffset + position + 1;
       const friendly = "símbolo no válido";
-      const full = `Error léxico en línea ${this.line}, columna ${this.column}: carácter no válido "${bad}"`;
+      const full = `Error léxico en línea ${this.line}, columna ${this.column}: carácter no válido error Léxico "${bad}"`;
       this.setFatal(afterAbs, friendly, full);
       return;
     }
