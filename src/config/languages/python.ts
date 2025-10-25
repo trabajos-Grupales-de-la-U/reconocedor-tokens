@@ -14,7 +14,6 @@ export const pythonLanguage = {
 
   grouping: ["\\(", "\\)", "\\[", "\\]", "\\{", "\\}", ",", ":", ";", "\\."],
 
-
   comment: {
     single: "#.*",
     multi: '""".*?"""|\'\'\'.*?\'\'\''
