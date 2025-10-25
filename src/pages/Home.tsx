@@ -1,4 +1,3 @@
-// src/pages/Home.tsx
 import React, { useState } from "react";
 import FileUploader from "../components/FileUploader";
 import ResultView from "../components/ResultView";
@@ -10,28 +9,35 @@ import type { Token } from "../core/tokenTypes";
 const Home: React.FC = () => {
   const [tokens, setTokens] = useState<Token[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [resultMessage, setResultMessage] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string | null>(null);
-  const [uploaderKey, setUploaderKey] = useState<number>(0); // 🔑 clave para forzar reinicio de FileUploader
 
-  // Procesar archivo cargado o test seleccionado
+  // NUEVO: para el editor
+  const [errorHeader, setErrorHeader] = useState<string | null>(null);
+  const [tailText, setTailText] = useState<string | null>(null);
+  const [fileContent, setFileContent] = useState<string>("");
+
   const handleFileSelect = (content: string, name?: string) => {
     try {
-      const lexer = new Lexer(content);
-      lexer.analyze();
-      const analyzedTokens = lexer.getTokens();
+      setFileContent(content);
 
-      setTokens(analyzedTokens);
+      const lexer = new Lexer(content);
+      const toks = lexer.analyze();
+
+      setTokens(toks);
       setError(lexer.errorMessage);
+      setErrorHeader(lexer.errorHeader);
+      setTailText(lexer.tailText);
+
       if (name) setFileName(name);
     } catch (err: any) {
       setError(err.message || "Error léxico desconocido.");
       setTokens([]);
+      setErrorHeader(null);
+      setTailText(null);
       if (name) setFileName(name);
     }
   };
 
-  // Cargar test de ejemplo
   const handleTestSelect = async (file: string) => {
     try {
       const response = await fetch(`/tests/${file}`);
@@ -42,62 +48,51 @@ const Home: React.FC = () => {
     }
   };
 
-  // Limpiar análisis (reinicia todo)
   const clearAnalysis = () => {
     setTokens([]);
     setError(null);
-    setResultMessage(null);
+    setErrorHeader(null);
+    setTailText(null);
     setFileName(null);
-    setUploaderKey((prev) => prev + 1); // 🔁 fuerza nuevo render del FileUploader
-
-    // También limpia el input file del DOM si existe
-    const input = document.querySelector('input[type="file"]') as HTMLInputElement;
-    if (input) input.value = "";
+    setFileContent("");
   };
 
-  // Mensaje de resultado dinámico
-  const computedResultMessage =
-    tokens.length === 0
-      ? undefined
-      : !error
+  const computedResult =
+    !error && tokens.length > 0
       ? "El archivo es válido: sin errores léxicos"
       : undefined;
 
   return (
-    <main className="min-h-screen w-full flex flex-col items-center justify-start py-10 px-6 bg-gray-900 text-white rounded-lg shadow-lg text-center space-y-6 animate-fadeIn">
+    <main className="w-full max-w-5xl bg-gray-900 rounded-lg shadow-lg p-8 flex flex-col items-center text-center space-y-6 mx-4">
       <h1 className="text-2xl font-bold">Coloreador Léxico – Proyecto II</h1>
 
-      {/* Subida de archivos */}
-      <FileUploader
-        key={uploaderKey} // 🔑 clave para reiniciar correctamente al limpiar
-        onFileSelect={handleFileSelect}
-        onTestSelect={handleTestSelect}
-      />
+      <FileUploader onFileSelect={handleFileSelect} onTestSelect={handleTestSelect} />
 
-      {/* Mostrar nombre del archivo analizado */}
       {fileName && (
         <p className="text-sm text-gray-400">
-          Archivo analizado:{" "}
-          <span className="text-blue-400 font-medium">{fileName}</span>
+          Archivo analizado: <span className="text-blue-400 font-medium">{fileName}</span>
         </p>
       )}
 
-      {/* Botón para limpiar todo */}
       <button
         onClick={clearAnalysis}
-        className="mt-2 bg-red-500 hover:bg-red-600 text-white font-semibold px-5 py-2 rounded-md transition"
+        className="mt-4 bg-red-500 hover:bg-red-600 text-white font-semibold px-5 py-2 rounded-md transition"
       >
         Limpiar análisis
       </button>
 
-      {/* Mensaje de resultado */}
-      <ResultView error={error || undefined} result={computedResultMessage} />
+      <ResultView error={error || undefined} result={computedResult} />
 
-      {/* Vista del código coloreado y tabla */}
       {tokens.length > 0 && (
-        <div className="w-full flex flex-col items-center space-y-6">
+        <div className="w-full flex flex-col items-center space-y-4">
           <h2 className="text-lg font-semibold mt-4">Código coloreado</h2>
-          <Editor tokens={tokens} />
+
+          <Editor
+            tokens={tokens}
+            errorHeader={errorHeader}
+            tailText={tailText}
+          />
+
           <TokenTable tokens={tokens} />
         </div>
       )}

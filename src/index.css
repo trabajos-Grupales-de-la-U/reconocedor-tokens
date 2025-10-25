@@ -80,3 +80,95 @@ h1 {
     background-color: #f9f9f9;
   }
 }
+
+
+/* ================================
+   🌙 ESTILOS DEL EDITOR DE CÓDIGO
+   ================================ */
+
+/* Contenedor principal del bloque de código */
+.ide-code-block {
+  background-color: #1e1e1e;
+  color: #ffffff;
+  font-family: "Fira Code", "Consolas", monospace;
+  font-size: 0.9rem;
+  line-height: 1.5rem;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.25);
+  border: 1px solid #333;
+  text-align: left;
+  overflow-x: auto;
+  white-space: pre-wrap; /* ✅ Respeta saltos de línea */
+  word-wrap: break-word;
+}
+
+/* =============================
+   COLORES SEGÚN EL PROYECTO II
+   ============================= */
+
+/* 🔵 Palabras reservadas */
+.keyword {
+  color: #3b82f6; /* azul */
+  font-weight: 500;
+}
+
+/* 🟠 Números y constantes */
+.number {
+  color: #fb923c; /* naranja */
+}
+
+/* ⚪ Signos de agrupación */
+.grouping {
+  color: #ffffff; /* blanco */
+}
+
+/* 🟡 Signos de comparación y operadores lógicos */
+.operator {
+  color: #facc15; /* amarillo */
+}
+
+/* 💚 Cadenas de texto */
+.string {
+  color: #86efac; /* verde claro */
+}
+
+/* 🌸 Identificadores y variables */
+.identifier {
+  color: #f472b6; /* rosado */
+}
+
+/* ⚫ Comentarios */
+.comment {
+  color: #9ca3af; /* gris claro */
+  font-style: italic;
+}
+
+/* 🔴 Errores léxicos */
+.error-token {
+  background-color: #dc2626; /* rojo fuerte */
+  color: white;
+  border-radius: 4px;
+  padding: 0 3px;
+}
+
+/* =============================
+   DETALLES VISUALES EXTRA
+   ============================= */
+
+/* Selección de texto */
+.ide-code-block ::selection {
+  background-color: #2563eb;
+  color: white;
+}
+
+/* Scrollbar personalizado */
+.ide-code-block::-webkit-scrollbar {
+  height: 6px;
+  background: #111827;
+}
+
+.ide-code-block::-webkit-scrollbar-thumb {
+  background: #374151;
+  border-radius: 4px;
+}

@@ -3,178 +3,194 @@ import type { Token } from "./tokenTypes";
 import { TokenType } from "./tokenTypes";
 import { pythonLanguage } from "../config/languages/python";
 
-/*
-  Analizador léxico:
-  - Recorre el texto línea por línea y carácter por carácter.
-  - Emite tokens en el orden en que aparecen, incluyendo espacios y saltos de línea.
-  - Se detiene en el primer error: agrega un token Error y guarda el mensaje.
-*/
-
+/**
+ * Analizador léxico:
+ * - Lee carácter por carácter todo el texto fuente.
+ * - Se detiene completamente al primer error.
+ * - tokens[] contiene solo lo válido hasta el error.
+ * - errorHeader y tailText se usan solo para pintar el resto en gris.
+ */
 export class Lexer {
   private source: string;
   private tokens: Token[] = [];
   private line = 1;
   private column = 1;
+
   public errorMessage: string | null = null;
+  public errorHeader: string | null = null;
+  public tailText: string | null = null;
+
+  private hasError = false;
 
   constructor(source: string) {
     this.source = source;
   }
 
-  // Ejecuta el análisis y devuelve los tokens generados
   public analyze(): Token[] {
+    this.tokens = [];
+    this.errorMessage = null;
+    this.errorHeader = null;
+    this.tailText = null;
+    this.hasError = false;
+
     const lines = this.source.split(/\r?\n/);
+    let absOffset = 0;
 
     for (let i = 0; i < lines.length; i++) {
+      if (this.hasError) break;
+
       this.line = i + 1;
-      const lineText = lines[i];
-      const ok = this.tokenizeLine(lineText);
-      if (!ok) break;
-      if (i < lines.length - 1) {
+      this.column = 1;
+      this.tokenizeLine(lines[i], absOffset);
+
+      if (!this.hasError && i < lines.length - 1) {
         this.addToken(TokenType.Whitespace, "\n");
-        this.column = 1;
       }
+
+      absOffset += lines[i].length + 1;
     }
 
     return this.tokens;
   }
 
-  // Devuelve true si terminó sin error en esta línea, false si hubo error
-  private tokenizeLine(line: string): boolean {
+  private tokenizeLine(line: string, baseOffset: number): void {
     let position = 0;
 
-        // --- Regla adicional (conveniencia): línea parece definición de función pero no empieza con 'def' ---
-    {
-      // Coincide líneas del estilo: <algo> nombre( ... ):
-      // Si ese <algo> NO es 'def', entonces consideramos error léxico (en este proyecto).
-      const defLike = /^\s*([A-Za-z_][A-Za-z0-9_]*)\s+[A-Za-z_][A-Za-z0-9_]*\s*\(.*\)\s*:\s*$/.exec(line);
-      if (defLike && defLike[1] !== "def") {
-        const wrong = defLike[1];
-        this.addToken(TokenType.Error, wrong);
-        this.errorMessage = `Error léxico en línea ${this.line}, columna ${this.column}: se esperaba 'def' al inicio de una definición de función (encontrado '${wrong}').`;
-        return false;
-      }
+    // Caso especial: parece "def" pero está mal escrito (definr)
+    const defLike = /^\s*([A-Za-z_][A-Za-z0-9_]*)\s+[A-Za-z_][A-Za-z0-9_]*\s*\(.*\)\s*:\s*$/.exec(line);
+    if (defLike && defLike[1] !== "def") {
+      const wrong = defLike[1];
+      this.addToken(TokenType.Error, wrong);
+      const afterAbs = baseOffset + line.indexOf(wrong) + wrong.length;
+      const friendly = "palabra no reconocida";
+      const full = `Error léxico en línea ${this.line}, columna 1: se esperaba 'def' al inicio de una definición de función (encontrado '${wrong}').`;
+      this.setFatal(afterAbs, friendly, full);
+      return;
     }
 
+    while (position < line.length && !this.hasError) {
+      const rest = line.slice(position);
 
-    while (position < line.length) {
-      const substring = line.slice(position);
-
-      // Espacios y tabs
-      const spaceMatch = /^\s+/.exec(substring);
-      if (spaceMatch) {
-        const text = spaceMatch[0];
-        this.addToken(TokenType.Whitespace, text);
-        position += text.length;
-        this.column += text.length;
+      // Espacios
+      const sp = /^\s+/.exec(rest);
+      if (sp) {
+        this.addToken(TokenType.Whitespace, sp[0]);
+        position += sp[0].length;
+        this.column += sp[0].length;
         continue;
       }
 
-      // Comentario de una línea (# ...)
-      const commentPattern = new RegExp(`^${pythonLanguage.comment.single}`);
-      const commentMatch = commentPattern.exec(substring);
-      if (commentMatch) {
-        this.addToken(TokenType.Comment, commentMatch[0]);
-        return true; // el resto de la línea es comentario
+      // Comentarios #
+      const cm = /^#.*$/.exec(rest);
+      if (cm) {
+        this.addToken(TokenType.Comment, cm[0]);
+        break;
       }
 
-      // Cadenas simples "..." y '...'
-      {
-        let matched = false;
-        for (const pattern of pythonLanguage.string.patterns) {
-          const re = new RegExp(`^${pattern}`);
-          const m = re.exec(substring);
-          if (m) {
-            this.addToken(TokenType.String, m[0]);
-            position += m[0].length;
-            this.column += m[0].length;
-            matched = true;
-            break;
-          }
+      // Cadenas válidas
+      let matched = false;
+      for (const p of pythonLanguage.string.patterns) {
+        const re = new RegExp(`^${p}`);
+        const m = re.exec(rest);
+        if (m) {
+          this.addToken(TokenType.String, m[0]);
+          position += m[0].length;
+          this.column += m[0].length;
+          matched = true;
+          break;
         }
-        if (matched) continue;
+      }
+      if (matched) continue;
+
+      // Comillas sin cerrar
+      if (/^["']/.test(rest)) {
+        this.addToken(TokenType.Error, rest[0]);
+        const afterAbs = baseOffset + position + 1;
+        const friendly = "comillas sin cerrar";
+        const full = `Error léxico en línea ${this.line}, columna ${this.column}: comillas sin cerrar`;
+        this.setFatal(afterAbs, friendly, full);
+        return;
       }
 
       // Palabras reservadas
-      {
-        const re = new RegExp(`^\\b(${pythonLanguage.reservedWords.join("|")})\\b`);
-        const m = re.exec(substring);
-        if (m) {
-          this.addToken(TokenType.Reserved, m[0]);
-          position += m[0].length;
-          this.column += m[0].length;
-          continue;
-        }
+      const rv = new RegExp(`^\\b(${pythonLanguage.reservedWords.join("|")})\\b`).exec(rest);
+      if (rv) {
+        this.addToken(TokenType.Reserved, rv[0]);
+        position += rv[0].length;
+        this.column += rv[0].length;
+        continue;
       }
 
       // Números
-      {
-        const re = new RegExp(`^${pythonLanguage.number.pattern}`);
-        const m = re.exec(substring);
-        if (m) {
-          this.addToken(TokenType.Number, m[0]);
-          position += m[0].length;
-          this.column += m[0].length;
-          continue;
-        }
+      const nm = new RegExp(`^${pythonLanguage.number.pattern}`).exec(rest);
+      if (nm) {
+        this.addToken(TokenType.Number, nm[0]);
+        position += nm[0].length;
+        this.column += nm[0].length;
+        continue;
       }
 
       // Operadores
-      {
-        const re = new RegExp(`^(${pythonLanguage.operators.join("|")})`);
-        const m = re.exec(substring);
-        if (m) {
-          this.addToken(TokenType.Operator, m[0]);
-          position += m[0].length;
-          this.column += m[0].length;
-          continue;
-        }
+      const op = new RegExp(`^(${pythonLanguage.operators.join("|")})`).exec(rest);
+      if (op) {
+        this.addToken(TokenType.Operator, op[0]);
+        position += op[0].length;
+        this.column += op[0].length;
+        continue;
       }
 
       // Agrupadores
-      {
-        const re = new RegExp(`^(${pythonLanguage.grouping.join("|")})`);
-        const m = re.exec(substring);
-        if (m) {
-          this.addToken(TokenType.Grouping, m[0]);
-          position += m[0].length;
-          this.column += m[0].length;
-          continue;
-        }
+      const gp = new RegExp(`^(${pythonLanguage.grouping.join("|")})`).exec(rest);
+      if (gp) {
+        this.addToken(TokenType.Grouping, gp[0]);
+        position += gp[0].length;
+        this.column += gp[0].length;
+        continue;
       }
 
       // Identificadores
-      {
-        const re = new RegExp(`^${pythonLanguage.identifier.pattern}`);
-        const m = re.exec(substring);
-        if (m) {
-          this.addToken(TokenType.Identifier, m[0]);
-          position += m[0].length;
-          this.column += m[0].length;
-          continue;
-        }
+      const id = new RegExp(`^${pythonLanguage.identifier.pattern}`).exec(rest);
+      if (id) {
+        this.addToken(TokenType.Identifier, id[0]);
+        position += id[0].length;
+        this.column += id[0].length;
+        continue;
       }
 
-      // Nada coincidió: error
-      const invalidChar = substring[0];
-      this.addToken(TokenType.Error, invalidChar);
-      this.errorMessage = `Error léxico en línea ${this.line}, columna ${this.column}: carácter no válido "${invalidChar}"`;
-      return false;
-    }
+      // Si nada coincide → carácter inválido
+      const bad = rest[0];
+      this.addToken(TokenType.Error, bad);
 
-    return true;
+      const afterAbs = baseOffset + position + 1;
+      const friendly = "símbolo no válido";
+      const full = `Error léxico en línea ${this.line}, columna ${this.column}: carácter no válido "${bad}"`;
+      this.setFatal(afterAbs, friendly, full);
+      return;
+    }
   }
+
+  /**
+   * Registra el error y guarda los textos auxiliares
+   * sin agregar tokens duplicados.
+   */
+private setFatal(afterAbs: number, friendly: string, fullMessage: string): void {
+  this.hasError = true;
+
+  // Guarda los textos para el renderizado
+  this.errorMessage = fullMessage;
+  this.errorHeader = `# Error: ${friendly}\n`;
+  this.tailText = this.source.slice(afterAbs + 1) || null;
+
+
+  // ⚠️ Elimina cualquier token tipo Comment duplicado del array
+  this.tokens = this.tokens.filter(t => !t.value.startsWith("# Error:"));
+}
+
 
   private addToken(type: TokenType, value: string): void {
-    this.tokens.push({
-      type,
-      value,
-      line: this.line,
-      column: this.column,
-    });
+    this.tokens.push({ type, value, line: this.line, column: this.column });
   }
 
-  // ✅ Nuevo método público: permite acceder a los tokens desde afuera
   public getTokens(): Token[] {
     return this.tokens;
   }

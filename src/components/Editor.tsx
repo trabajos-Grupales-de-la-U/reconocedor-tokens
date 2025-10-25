@@ -1,4 +1,3 @@
-// src/components/Editor.tsx
 import React from "react";
 import type { Token } from "../core/tokenTypes";
 import { TokenType } from "../core/tokenTypes";
@@ -6,50 +5,38 @@ import "../styles/editor.css";
 
 interface EditorProps {
   tokens: Token[];
+  errorHeader?: string | null; // "# Error: …\n"
+  tailText?: string | null;    // resto del archivo (gris)
 }
 
-const classByType: Record<TokenType, string> = {
-  [TokenType.Reserved]: "text-blue-400", // 🔵 Palabras reservadas
-  [TokenType.Number]: "text-orange-400", // 🟠 Números y constantes
-  [TokenType.Grouping]: "text-white", // ⚪ Agrupadores
-  [TokenType.Operator]: "text-yellow-400", // 🟡 Operadores lógicos/comparación
-  [TokenType.String]: "text-green-300", // 💚 Cadenas
-  [TokenType.Identifier]: "text-pink-400", // 🌸 Variables / Identificadores
-  [TokenType.Comment]: "text-gray-400 italic", // ⚫ Comentarios
-  [TokenType.Whitespace]: "", // sin color
-  [TokenType.Error]: "bg-red-600 text-white px-1 rounded", // 🔴 Errores
+/** Mapa tipo -> clase CSS (editor.css) */
+const cls: Record<TokenType, string> = {
+  [TokenType.Reserved]: "keyword",
+  [TokenType.Number]: "number",
+  [TokenType.Grouping]: "operator",
+  [TokenType.Operator]: "operator",
+  [TokenType.String]: "string",
+  [TokenType.Identifier]: "identifier",
+  [TokenType.Comment]: "comment",
+  [TokenType.Whitespace]: "",
+  [TokenType.Error]: "error-token",
 };
 
-const Editor: React.FC<EditorProps> = ({ tokens }) => {
+const Editor: React.FC<EditorProps> = ({ tokens, errorHeader, tailText }) => {
   return (
-    <pre
-      className="
-        bg-[#1e1e1e] 
-        text-white 
-        font-mono 
-        text-sm 
-        p-4 
-        rounded-lg 
-        shadow-lg 
-        w-full 
-        max-w-3xl 
-        text-left 
-        overflow-x-auto 
-        leading-6 
-        border 
-        border-gray-700 
-        whitespace-pre-wrap 
-        break-words
-      "
-    >
-      {tokens.map((t, i) => {
-        const cls = classByType[t.type] || "";
-        return (
-          <span key={i} className={cls}>
-            {t.value}
-          </span>
-        );
-      })}
+    <pre className="ide-code-block">
+      {/* Encabezado gris si hay error */}
+      {errorHeader ? <span className="comment">{errorHeader}</span> : null}
+
+      {/* Tokens reales (hasta el primer Error) */}
+      {tokens.map((t, i) => (
+        <span key={i} className={cls[t.type] || ""}>
+          {t.value}
+        </span>
+      ))}
+
+      {/* Cola en gris después del error */}
+      {tailText ? <span className="comment">{tailText}</span> : null}
     </pre>
   );
 };
