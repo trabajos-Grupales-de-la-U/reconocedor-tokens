@@ -1,75 +1,43 @@
+/* === Bloque base === */
 .ide-code-block {
   background-color: #1e1e1e;
-  color: #ddd;
-  padding: 1rem 1.5rem;
-  border-radius: 10px;
-  font-family: "Fira Code", monospace;
-  font-size: 0.95rem;
-  white-space: pre-wrap;
-  text-align: left;
-  overflow-x: auto;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-}
-
-/* Colores según las reglas oficiales */
-.keyword {
-  color: #3b82f6; /* azul */
-  font-weight: 600;
-}
-.number {
-  color: #f97316; /* anaranjado */
-}
-.operator {
-  color: #facc15; /* amarillo */
-}
-.grouping {
-  color: #ffffff; /* blanco */
-}
-.string {
-  color: #86efac; /* verde claro */
-}
-.identifier {
-  color: #f472b6; /* rosado */
-}
-.comment {
-  color: #9ca3af; /* gris */
-  font-style: italic;
-}
-.error-token {
-  background-color: #dc2626; /* rojo */
-  color: #fff;
-  border-radius: 4px;
-  padding: 0 2px;
-}
-
-/* Texto sin analizar (solo si hay error real) */
-.unprocessed {
-  color: #666;
-  opacity: 0.6;
-}
-
-
-/* Tonos para los tokens (ajusta si usas Tailwind o tema oscuro) */
-.keyword { color: #569cd6; }
-.number { color: #d19a66; }
-.operator { color: #dcdcaa; }
-.string { color: #98c379; }
-.identifier { color: #c586c0; }
-.comment { color: #6a9955; font-style: italic; }
-.error-token { background: #e74c3c; color: #fff; padding: 0 2px; border-radius: 3px; }
-
-/* Fondo tipo IDE */
-.ide-code-block {
-  background: #1e1e1e;
-  color: #d4d4d4;
+  color: #e5e5e5;
+  font-family: "Fira Code", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 15px;
+  line-height: 1.4em;
   padding: 1rem;
-  border-radius: 10px;
-  font-family: "Fira Code", monospace;
+  border-radius: 8px;
   white-space: pre-wrap;
+  word-break: break-word;
 }
+.ide-code-block span { white-space: pre; }
 
-/* Nueva clase: todo lo que aparece después del error */
-.after-error {
-  opacity: 0.25; /* gris apagado */
-  filter: grayscale(70%);
+/* Palabras reservadas → azul */
+.keyword { color: #60a5fa; }
+
+/* Números / constantes → anaranjado */
+.number { color: #fb923c; }
+
+/* Operadores / comparadores / lógicos → amarillo */
+.operator { color: #fde68a; }
+
+/* Agrupación (() [] {}) → blanco */
+.grouping { color: #ffffff; }   /* ← REGLA CLAVE */
+
+/* Cadenas → verde claro */
+.string { color: #4ade80; }
+
+/* Identificadores → rosado */
+.identifier { color: #f472b6; }
+
+/* Comentarios / cola gris */
+.comment { color: #9ca3af; font-style: italic; }
+
+/* Error → fondo rojo con texto blanco */
+.error-token {
+  background-color: #dc2626;
+  color: #ffffff;
+  padding: 0 4px;
+  border-radius: 4px;
+  font-weight: 600;
 }

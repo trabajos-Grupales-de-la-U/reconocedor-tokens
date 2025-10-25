@@ -182,7 +182,7 @@ private setFatal(afterAbs: number, friendly: string, fullMessage: string): void 
   this.tailText = this.source.slice(afterAbs + 1) || null;
 
 
-  // ⚠️ Elimina cualquier token tipo Comment duplicado del array
+  //  Elimina cualquier token tipo Comment duplicado del array
   this.tokens = this.tokens.filter(t => !t.value.startsWith("# Error:"));
 }
 
